@@ -1,0 +1,426 @@
+[node1] (local) root@192.168.0.23 ~
+$ git clone https://github.com/jwtoh21/test
+Cloning into 'test'...
+remote: Enumerating objects: 24, done.
+remote: Counting objects: 100% (24/24), done.
+remote: Compressing objects: 100% (21/21), done.
+remote: Total 24 (delta 0), reused 0 (delta 0), pack-reused 0Unpacking objects: 100% (24/24), done.[node1] (local) root@192.168.0.23 ~$ lstest[node1] (local) root@192.168.0.23 ~$ cd test[node1] (local) root@192.168.0.23 ~/test$ lbash: l: command not found[node1] (local) root@192.168.0.23 ~/test$ lsREADME.md            Test question 2.PNG  test error.PNGTest question 1.PNG  test
+[node1] (local) root@192.168.0.23 ~/test
+$ cd test
+[node1] (local) root@192.168.0.23 ~/test/test
+$ ls
+Dockerfile          api                 instagram.py        wikicrawler.py
+README.md           docker-compose.yml  packetsniffer.py    www
+[node1] (local) root@192.168.0.23 ~/test/test
+$ docker image ls
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+[node1] (local) root@192.168.0.23 ~/test/test
+$ docker image build -t wikicrawler:step5 .
+Sending build context to Docker daemon  20.48kB
+Step 1/8 : FROM       python:3
+3: Pulling from library/python
+50e431f79093: Pull complete
+dd8c6d374ea5: Pull complete
+c85513200d84: Pull complete
+55769680e827: Pull complete
+f5e195d50b88: Pull complete
+94cdd3612287: Pull complete
+3b37b69935d4: Pull complete
+b9add85f08c4: Pull complete
+aa1f4a29beac: Pull complete
+Digest: sha256:da4f61227d5facb694293c1356051403d0d163a2d7aa8a0e0d3d9cfc347e3901
+Status: Downloaded newer image for python:3
+ ---> f88b2f81f83a
+Step 2/8 : RUN        pip install beautifulsoup4
+ ---> Running in f392b91ff0a3
+Collecting beautifulsoup4
+  Downloading beautifulsoup4-4.8.2-py3-none-any.whl (106 kB)
+Collecting soupsieve>=1.2
+  Downloading soupsieve-2.0-py2.py3-none-any.whl (32 kB)
+Installing collected packages: soupsieve, beautifulsoup4
+Successfully installed beautifulsoup4-4.8.2 soupsieve-2.0
+Removing intermediate container f392b91ff0a3
+ ---> 47ec4eaf0305
+Step 3/8 : RUN        pip install requests
+ ---> Running in 06278ac0e504
+Collecting requests
+  Downloading requests-2.23.0-py2.py3-none-any.whl (58 kB)
+Collecting idna<3,>=2.5
+  Downloading idna-2.9-py2.py3-none-any.whl (58 kB)
+Collecting urllib3!=1.25.0,!=1.25.1,<1.26,>=1.21.1
+  Downloading urllib3-1.25.8-py2.py3-none-any.whl (125 kB)
+Collecting chardet<4,>=3.0.2
+  Downloading chardet-3.0.4-py2.py3-none-any.whl (133 kB)
+Collecting certifi>=2017.4.17
+  Downloading certifi-2019.11.28-py2.py3-none-any.whl (156 kB)
+Installing collected packages: idna, urllib3, chardet, certifi, requests
+Successfully installed certifi-2019.11.28 chardet-3.0.4 idna-2.9 requests-2.23.0 urllib3-1.25.8
+Removing intermediate container 06278ac0e504
+ ---> 98503fc4ac60
+Step 4/8 : RUN     pip install Wikipedia
+ ---> Running in c5baeafa8fc4
+Collecting Wikipedia
+  Downloading wikipedia-1.4.0.tar.gz (27 kB)
+Requirement already satisfied: beautifulsoup4 in /usr/local/lib/python3.8/site-packages (from Wikipedia) (4.8.2)
+Requirement already satisfied: requests<3.0.0,>=2.0.0 in /usr/local/lib/python3.8/site-packages (from Wikipedia) (2.23.0)
+Requirement already satisfied: soupsieve>=1.2 in /usr/local/lib/python3.8/site-packages (from beautifulsoup4->Wikipedia) (2.0)
+Requirement already satisfied: idna<3,>=2.5 in /usr/local/lib/python3.8/site-packages (from requests<3.0.0,>=2.0.0->Wikipedia) (2.9)
+Requirement already satisfied: urllib3!=1.25.0,!=1.25.1,<1.26,>=1.21.1 in /usr/local/lib/python3.8/site-packages (from requests<3.0.0,>=2.0.0->Wikipedia) (1.25.8)
+Requirement already satisfied: chardet<4,>=3.0.2 in /usr/local/lib/python3.8/site-packages (from requests<3.0.0,>=2.0.0->Wikipedia) (3.0.4)
+Requirement already satisfied: certifi>=2017.4.17 in /usr/local/lib/python3.8/site-packages (from requests<3.0.0,>=2.0.0->Wikipedia) (2019.11.28)
+Building wheels for collected packages: Wikipedia
+  Building wheel for Wikipedia (setup.py): started
+  Building wheel for Wikipedia (setup.py): finished with status 'done'
+  Created wheel for Wikipedia: filename=wikipedia-1.4.0-py3-none-any.whl size=11685 sha256=fd91998b080fa34b9a629442e0131b5082e8367274507e1d5bdfc679b3a9a849
+  Stored in directory: /root/.cache/pip/wheels/07/93/05/72c05349177dca2e0ba31a33ba4f7907606f7ddef303517c6a
+Successfully built Wikipedia
+Installing collected packages: Wikipedia
+Successfully installed Wikipedia-1.4.0
+Removing intermediate container c5baeafa8fc4
+ ---> 2ca31eda7634
+Step 5/8 : WORKDIR    /app
+ ---> Running in 6d0a59f23730
+Removing intermediate container 6d0a59f23730
+ ---> a5ab5fb4e6e0
+Step 6/8 : COPY       wikicrawler.py /app/
+ ---> de5e93a7beef
+Step 7/8 : RUN        chmod a+x wikicrawler.py
+ ---> Running in 13fa3e1b6ffa
+Removing intermediate container 13fa3e1b6ffa
+ ---> b036b6b3459a
+Step 8/8 : ENTRYPOINT ["./wikicrawler.py"]
+ ---> Running in aff62b9f4cb4
+Removing intermediate container aff62b9f4cb4
+ ---> 640672fbd2b1
+Successfully built 640672fbd2b1
+Successfully tagged wikicrawler:step5
+[node1] (local) root@192.168.0.23 ~/test/test
+$ docker image ls
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+wikicrawler         step5               640672fbd2b1        9 seconds ago       944MB
+python              3                   f88b2f81f83a        8 days ago          933MB
+[node1] (local) root@192.168.0.23 ~/test/test
+$ docker container run -it --rm wikicrawler:step5 sitiawan
+Ahmad Boestamam
+Alor Pongsu
+Anglo-Chinese School, Sitiawan
+Aulong
+Ayer Tawar
+Bagan Datuk
+Bagan Datuk District
+Bagan Serai
+Bagan Sungai Burong
+Bandar Meru Raya
+Bandar Seri Botani
+Banding Island
+Banir
+Batak Rabit
+Batang Padang District
+Batu Gajah
+Batu Kurau
+Behrang
+Behrang 2020
+Behrang Station
+Bercham
+Beruas
+Bidor
+Bikam
+Bota
+Boxer Rebellion
+Bukit Chandan
+Bukit Gantang
+Bukit Merah, Perak
+Bumiputera (Malaysia)
+Buntong
+Changkat Jering
+Changkat Keruing
+Chemor
+Chenderiang
+Chenderong Balai
+Chikus
+Chin Peng
+Chinese Malaysian
+Christianity in China
+Chulek
+Coat of arms of Perak
+Constitution of Perak
+Crime in Perak
+Cuisine of Ipoh
+Cuisine of Perak
+Damar Laut
+Demographics of Perak
+Deutscher Wetterdienst
+Districts of Malaysia
+Economy of Perak
+Education in Perak
+Elections in Perak
+Elephant
+Enggor
+Ethnicity
+FELDA Besout
+Falim
+Feng-shui
+Flag of Perak
+Fuzhou
+Gerik
+Gopeng
+Greentown, Perak
+Gunung Rapat
+Gutian County
+Hilir Perak District
+History of Perak
+Hulu Perak District
+Hutan Melintang
+Index of Perak-related articles
+International Standard Book Number
+Ipoh
+Jarak Island
+Jelapang, Perak
+Jeram, Perak
+Jerlun, Perak
+Judiciary in Perak
+Kampar, Perak
+Kampar District
+Kampung Coldstream
+Kampung Gajah
+Kampung Kuala Slim
+Kampung Pintu Gerbang
+Kampung Tawas
+Kamunting
+Karai, Perak
+Kerian District
+Kinta District
+Klebang, Perak
+Klian Intan
+Kota Bharu, Perak
+Kota Setia
+Kuala Kangsar
+Kuala Kangsar District
+Kuala Kurau
+Kuala Sepetang
+Kubu Gajah
+Lahat, Malaysia
+Langkap
+Larut, Matang and Selama District
+Latex processing
+Law of Perak
+Lekir
+Lenggong
+List of Menteris Besar of Perak
+List of people from Perak
+Lumut, Malaysia
+Lumut Port
+Malay language
+Malayan Communist Party
+Malaysia
+Malaysian Indian
+Malaysian Standard Time
+Malim Nawar
+Mambang Di Awan
+Manjoi
+Manjung District
+Manong, Perak
+Matang
+Menglembu
+Muallim District
+Mukim
+Music of Perak
+New Kopisan
+Oil palm
+Ong Seok Kim
+Outline of Perak
+Padang Gajah
+Padang Rengas
+Pangkor Island
+Pangkor Laut Island
+Pantai Remis
+Parit
+Parit Buntar
+Pasir Hitam Island
+Pasir Salak
+Pekan Gurney
+Penang
+Pengkalan Hulu
+Perak
+Perak Darul Ridzuan
+Perak Malay
+Perak State Legislative Assembly
+Perak Tengah District
+Pokok Assam
+Precipitation
+Proton City
+Pusing
+Relative humidity
+Royal Malaysian Navy
+Rubber
+Rubber tapping
+Sauk, Malaysia
+Sayong
+Sekolah Menengah Kebangsaan Ahmad Boestamam
+Selama
+Selekoh
+Sembilan Island
+Seri Iskandar
+Seri Manjung
+Simpang, Perak
+Simpang Empat, Perak
+Simpang Empat (Semanggol), Perak
+Simpang Pulai
+Simpang Tiga
+Sitiawan (federal constituency)
+Slim, Perak
+Slim River
+States and federal territories of Malaysia
+Sub-district
+Sultan of Perak
+Sungai Siput
+Sungkai
+Sunshine duration
+Sunway City Ipoh
+Swiftlet
+Taiping, Perak
+Tambun
+Tanjung Belanja
+Tanjung Malim
+Tanjung Piandang
+Tanjung Rambutan
+Tanjung Tualang
+Tapah
+Tapah Road
+Teluk Batik
+Teluk Intan
+Teluk Rubiah
+Temoh
+Temoh Station
+Terong
+Teronoh
+Time zone
+Trolak
+Tronoh Mines
+Tropical rainforest climate
+UTC+8
+Ulu Bernam
+Ulu Kinta
+United Kingdom
+[node1] (local) root@192.168.0.23 ~/test/test
+$ docker-compose up -d --build
+Creating network "test_default" with the default driver
+Building web
+Step 1/4 : FROM       php:7-apache
+7-apache: Pulling from library/php
+68ced04f60ab: Pull complete
+1d2a5d8fa585: Pull complete
+5d59ec4ae241: Pull complete
+d42331ef4d44: Pull complete
+408b7b7ee112: Pull complete
+570cd47896d5: Pull complete
+2419413b2a16: Pull complete
+2c7832852643: Pull complete
+8b0b209a25bc: Pull complete
+46011418685f: Pull complete
+68be3748ea55: Pull complete
+4e3af655ec1e: Pull complete
+9f579d3b7159: Pull complete
+Digest: sha256:c496c0f962eaaea0f52d9c068bf331fe477703d4657f99b955a2a35a4c3486c4
+Status: Downloaded newer image for php:7-apache
+ ---> d753d5b380a1
+Step 2/4 : LABEL      maintainer="Sawood Alam <@ibnesayeed>"
+ ---> Running in 4c5808b56987
+Removing intermediate container 4c5808b56987
+ ---> 9d2cb1c39195
+Step 3/4 : ENV        API_ENDPOINT="http://localhost:5000/api/"
+ ---> Running in a48a6acaddaa
+Removing intermediate container a48a6acaddaa
+ ---> 682f732357a0
+Step 4/4 : COPY       . /var/www/html/
+ ---> 1eba59746523
+Successfully built 1eba59746523
+Successfully tagged wikicrawler-web:step5-php
+Building api
+Step 1/9 : FROM       python:3
+ ---> f88b2f81f83a
+Step 2/9 : LABEL      maintainer="Sawood Alam <@ibnesayeed>"
+ ---> Running in d3fc17b68c30
+Removing intermediate container d3fc17b68c30
+ ---> 25ce1849e370
+Step 3/9 : ENV        REDIS_URL="redis://localhost:6379"
+ ---> Running in 58d639b2a09e
+Removing intermediate container 58d639b2a09e
+ ---> 3453b155cad3
+Step 4/9 : WORKDIR    /app
+ ---> Running in c410f6daa8e7
+Removing intermediate container c410f6daa8e7
+ ---> 3f033e831cbf
+Step 5/9 : COPY       requirements.txt /app/
+ ---> a0131a60efb6
+Step 6/9 : RUN        pip install -r requirements.txt
+ ---> Running in 2859ac4317b9
+Collecting beautifulsoup4
+  Downloading beautifulsoup4-4.8.2-py3-none-any.whl (106 kB)
+Collecting flask
+  Downloading Flask-1.1.1-py2.py3-none-any.whl (94 kB)
+Collecting redis
+  Downloading redis-3.4.1-py2.py3-none-any.whl (71 kB)
+Collecting wikipedia
+  Downloading wikipedia-1.4.0.tar.gz (27 kB)
+Collecting requests
+  Downloading requests-2.23.0-py2.py3-none-any.whl (58 kB)
+Collecting soupsieve>=1.2
+  Downloading soupsieve-2.0-py2.py3-none-any.whl (32 kB)
+Collecting Werkzeug>=0.15
+  Downloading Werkzeug-1.0.0-py2.py3-none-any.whl (298 kB)
+Collecting itsdangerous>=0.24
+  Downloading itsdangerous-1.1.0-py2.py3-none-any.whl (16 kB)
+Collecting click>=5.1
+  Downloading Click-7.0-py2.py3-none-any.whl (81 kB)
+Collecting Jinja2>=2.10.1
+  Downloading Jinja2-2.11.1-py2.py3-none-any.whl (126 kB)
+Collecting chardet<4,>=3.0.2
+  Downloading chardet-3.0.4-py2.py3-none-any.whl (133 kB)
+Collecting certifi>=2017.4.17
+  Downloading certifi-2019.11.28-py2.py3-none-any.whl (156 kB)
+Collecting idna<3,>=2.5
+  Downloading idna-2.9-py2.py3-none-any.whl (58 kB)
+Collecting urllib3!=1.25.0,!=1.25.1,<1.26,>=1.21.1
+  Downloading urllib3-1.25.8-py2.py3-none-any.whl (125 kB)
+Collecting MarkupSafe>=0.23
+  Downloading MarkupSafe-1.1.1-cp38-cp38-manylinux1_x86_64.whl (32 kB)
+Building wheels for collected packages: wikipedia
+  Building wheel for wikipedia (setup.py): started
+  Building wheel for wikipedia (setup.py): finished with status 'done'
+  Created wheel for wikipedia: filename=wikipedia-1.4.0-py3-none-any.whl size=11685 sha256=480c5ae3dfe1c935cee0999b74fb0db56f501844ba716f5070edadbfe8fa33b9
+  Stored in directory: /root/.cache/pip/wheels/07/93/05/72c05349177dca2e0ba31a33ba4f7907606f7ddef303517c6a
+Successfully built wikipedia
+Installing collected packages: soupsieve, beautifulsoup4, Werkzeug, itsdangerous,click, MarkupSafe, Jinja2, flask, redis, chardet, certifi, idna, urllib3, requests, wikipedia
+Successfully installed Jinja2-2.11.1 MarkupSafe-1.1.1 Werkzeug-1.0.0 beautifulsoup4-4.8.2 certifi-2019.11.28 chardet-3.0.4 click-7.0 flask-1.1.1 idna-2.9 itsdangerous-1.1.0 redis-3.4.1 requests-2.23.0 soupsieve-2.0 urllib3-1.25.8 wikipedia-1.4.0
+Removing intermediate container 2859ac4317b9
+ ---> 1b5843743b79
+Step 7/9 : COPY       *.py /app/
+ ---> 705915672b88
+Step 8/9 : RUN        chmod a+x *.py
+ ---> Running in cc3107215a15
+Removing intermediate container cc3107215a15
+ ---> b92f8c700578
+Step 9/9 : CMD        ["./main.py"]
+ ---> Running in 638f6c2ba45e
+Removing intermediate container 638f6c2ba45e
+ ---> ed05d25c57ba
+Successfully built ed05d25c57ba
+Successfully tagged wikicrawler-api:step5-python
+Pulling redis (redis:)...
+latest: Pulling from library/redis
+68ced04f60ab: Already exists
+7ecc253967df: Pull complete
+765957bf98d4: Pull complete
+52f16772e1ca: Pull complete
+2e43ba99c3f3: Pull complete
+d95576c71392: Pull complete
+Creating test_api_1   ... done
+Creating test_web_1   ... done
+Creating test_redis_1 ... done
+[node1] (local) root@192.168.0.23 ~/test/test
+$ docker container ls
+CONTAINER ID        IMAGE                          COMMAND                  CREATED             STATUS              PORTS                    NAMES
+e3a374ff6cbf        redis                          "docker-entrypoint.s…"   32 seconds ago      Up 31 seconds       6379/tcp                 test_redis_1
+c16116dda57f        wikicrawler-web:step5-php      "docker-php-entrypoi…"   32 seconds ago      Up 31 seconds       0.0.0.0:80->80/tcp       test_web_1
+17d027d26946        wikicrawler-api:step5-python   "./main.py"              32 seconds ago      Up 31 seconds       0.0.0.0:5000->5000/tcp   test_api_1
